@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 )
 
+
 func printErr(err error, s string) {
 	if err != nil {
 		fmt.Println("Error occurs on ", s , "\n" , err.Error())
@@ -26,9 +27,9 @@ func printOutput(outs []byte) {
   }
 }
 
-func executeGrep(query string) []byte{
+func executeGrep(query string, vm string) []byte{
 
-	cmd := exec.Command("grep", "-nr", query, "machine.i.log")
+	cmd := exec.Command("grep", "-nr", query, vm)
     printCommand(cmd)
     output, err := cmd.CombinedOutput()
 	//print error
@@ -38,7 +39,7 @@ func executeGrep(query string) []byte{
 	return output
 }
 
-func parseRequest(conn net.Conn) {
+func parseRequest(conn net.Conn, vm string) {
 
 	//create a buffer to hold transferred data
 	buf := make([]byte, 1024)
@@ -53,7 +54,7 @@ func parseRequest(conn net.Conn) {
 	fmt.Println("received query:", reqArr[0])
 		
 	//execute grep
-	output := executeGrep(reqArr[0])
+	output := executeGrep(reqArr[0], vm)
 
 	//append vm name to each grep result
 	arr := strings.Split(string(output), "\n")
@@ -73,24 +74,26 @@ func parseRequest(conn net.Conn) {
 	conn.Close()
 }
 
-func getIPAddr() string{
+func getIPAddrAndLogfile() (string, string){
 
 	data, err := ioutil.ReadFile("ip_address")
-	ip := string(data[:])
+	//info := string(data[:])
+	arr := strings.Split(string(data[:]), " ") 
 	if err != nil {
 		panic(err)
 	}
-	if strings.HasSuffix(ip, "\n") {
-		ip = ip[:len(ip) - 1]
+	if strings.HasSuffix(arr[1], "\n") {
+		arr[1] = arr[1][:len(arr[1]) - 1]
 	}
-	fmt.Println("ip address of current VM:" + ip)
-	return ip
+	fmt.Println("ip address of current VM:" + arr[0])
+	fmt.Println(arr[1])
+	return arr[0],arr[1]
 }
 
 func main() {
 
 	//get ip address from servers list	
-	ip := getIPAddr()
+	ip, vm := getIPAddrAndLogfile()
 	//listen for incoming connections
 	l, err := net.Listen("tcp", ip + ":3000")
 	printErr(err, "listening")
@@ -105,7 +108,7 @@ func main() {
 		fmt.Println("Accept:", conn.RemoteAddr().String())
 		printErr(err, "accepting")
 
-		go parseRequest(conn)
+		go parseRequest(conn, vm)
 	}
 }
 	
