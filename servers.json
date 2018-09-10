@@ -2,38 +2,63 @@
   "server_list": [
     {
       "id" : 1,
-      "hostname" : "fa18-cs425-g06-01.cs.illinois.edu",
-      "logfile" : "machine1.i.log"
+      "hostname" : "fa18-cs425-g69-01.cs.illinois.edu",
+      "logfile" : "machine1.i.log",
+      "ip" : "172.22.158.228"
     },
     {
       "id" : 2,
-      "hostname" : "fa18-cs425-g06-02.cs.illinois.edu",
-      "logfile" : "machine2.i.log"
+      "hostname" : "fa18-cs425-g69-02.cs.illinois.edu",
+      "logfile" : "machine2.i.log",
+      "ip" : "172.22.154.229"
     },
     {
       "id" : 3,
-      "hostname" : "fa18-cs425-g06-03.cs.illinois.edu",
-      "logfile" : "machine3.i.log"
+      "hostname" : "fa18-cs425-g69-03.cs.illinois.edu",
+      "logfile" : "machine3.i.log",
+      "ip" : "172.22.156.229"
     },
     {
       "id" : 4,
-      "hostname" : "fa18-cs425-g06-04.cs.illinois.edu",
-      "logfile" : "machine4.i.log"
+      "hostname" : "fa18-cs425-g69-04.cs.illinois.edu",
+      "logfile" : "machine4.i.log",
+      "ip" : "172.22.158.229",
     },
     {
       "id" : 5,
-      "hostname" : "fa18-cs425-g06-05.cs.illinois.edu",
-      "logfile" : "machine5.i.log"
+      "hostname" : "fa18-cs425-g69-05.cs.illinois.edu",
+      "logfile" : "machine5.i.log",
+      "ip" : "172.22.154.230"
     },
     {
       "id" : 6,
-      "hostname" : "fa18-cs425-g06-06.cs.illinois.edu",
-      "logfile" : "machine6.i.log"
+      "hostname" : "fa18-cs425-g69-06.cs.illinois.edu",
+      "logfile" : "machine6.i.log",
+      "ip" : "172.22.156.230"
     },
     {
       "id" : 7,
-      "hostname" : "fa18-cs425-g06-07.cs.illinois.edu",
-      "logfile" : "machine7.i.log"
+      "hostname" : "fa18-cs425-g69-07.cs.illinois.edu",
+      "logfile" : "machine7.i.log",
+      "ip" : "172.22.158.230"
+    },
+    {
+      "id" : 8,
+      "hostname" : "fa18-cs425-g69-08.cs.illinois.edu",
+      "logfile" : "machine8.i.log",
+      "ip" : "172.22.154.231"
+    },
+    {
+      "id" : 9,
+      "hostname" : "fa18-cs425-g69-09.cs.illinois.edu",
+      "logfile" : "machine9.i.log",
+      "ip" : "172.22.156.231"
+    },
+    {
+      "id" : 10,
+      "hostname" : "fa18-cs425-g69-10.cs.illinois.edu",
+      "logfile" : "machine10.i.log",
+      "ip" : "172.22.158.231"
     }
   ]
 }
