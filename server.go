@@ -4,9 +4,9 @@ import (
 	"net"
 	"os"
 	"fmt"
-	//"bytes"
 	"os/exec"
 	"strings"
+	"io/ioutil"
 )
 
 func printErr(err error, s string) {
@@ -73,9 +73,26 @@ func parseRequest(conn net.Conn) {
 	conn.Close()
 }
 
+func getIPAddr() string{
+
+	data, err := ioutil.ReadFile("ip_address")
+	ip := string(data[:])
+	if err != nil {
+		panic(err)
+	}
+	if strings.HasSuffix(ip, "\n") {
+		ip = ip[:len(ip) - 1]
+	}
+	fmt.Println("ip address of current VM:" + ip)
+	return ip
+}
+
 func main() {
+
+	//get ip address from servers list	
+	ip := getIPAddr()
 	//listen for incoming connections
-	l, err := net.Listen("tcp", "localhost:3000")
+	l, err := net.Listen("tcp", ip + ":3000")
 	printErr(err, "listening")
 	
 	//close the listener when app closes
