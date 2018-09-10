@@ -7,7 +7,7 @@ import "os"
 import "io"
 import "encoding/json" 
 import "io/ioutil"
-import "strconv"
+//import "strconv"
 import "sync"
 
 
@@ -31,7 +31,7 @@ func main(){
 	var server_info Servsers
 	json.Unmarshal(byteValue, &server_info)
 	for i := 0; i < len(server_info.Servsers); i++ {
-		fmt.Println("Server Id: " + strconv.Itoa(server_info.Servsers[i].Id))
+		fmt.Println("Server Id: " + server_info.Servsers[i].Id)
 		fmt.Println("Server Hostname: " + server_info.Servsers[i].Hostname)
 		fmt.Println("Server Logfile: " + server_info.Servsers[i].Logfile)
 	}
@@ -41,13 +41,12 @@ func main(){
 	wg.Add(len(server_info.Servsers))
 	for i := 0; i < len(server_info.Servsers); i++ {
 		//go work(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num)
-		go func(Hostname string, Logfile string, grep_cmd string, port_num string, i int){
+		go func(Hostname string, Logfile string, grep_cmd string, port_num string, id string){
 			//connect to server
 			conn, _ := net.Dial("tcp", Hostname + ":" + port_num)
 			//send to socket
-			name := "machine" + strconv.Itoa(i + 1) + ".i.log"
+			name := "machine" + id + ".i.log"
 			fmt.Fprintf(conn, grep_cmd + " " + name)
-			//fmt.Fprintf(conn, grep_cmd)
 			//create log file
 			f, err := os.Create(Logfile)
 			if err != nil {
@@ -58,7 +57,7 @@ func main(){
 	
 			//read message from socket and write to log file
 			for true {
-				message := make([]byte, 1024)
+				message := make([]byte, 5120)
 				n1, err := conn.Read(message)
 				if err != nil {
 					if err == io.EOF {
@@ -78,7 +77,7 @@ func main(){
 				_ = n2
 			}	
 			wg.Done()	
-		}(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num, i)		
+		}(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num, server_info.Servsers[i].Id)		
 	}
 	wg.Wait()
 	fmt.Println("done")
@@ -89,7 +88,7 @@ type Servsers struct {
 }
 
 type serverInfo struct {
-	Id    int    `json:"id"`
+	Id    string    `json:"id"`
 	Hostname   string `json:"hostname"`
 	Logfile   string `json:"logfile"`
 }
