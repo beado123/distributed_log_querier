@@ -1,0 +1,39 @@
+{
+  "server_list": [
+    {
+      "id" : 1,
+      "hostname" : "fa18-cs425-g06-01.cs.illinois.edu",
+      "logfile" : "machine1.i.log"
+    },
+    {
+      "id" : 2,
+      "hostname" : "fa18-cs425-g06-02.cs.illinois.edu",
+      "logfile" : "machine2.i.log"
+    },
+    {
+      "id" : 3,
+      "hostname" : "fa18-cs425-g06-03.cs.illinois.edu",
+      "logfile" : "machine3.i.log"
+    },
+    {
+      "id" : 4,
+      "hostname" : "fa18-cs425-g06-04.cs.illinois.edu",
+      "logfile" : "machine4.i.log"
+    },
+    {
+      "id" : 5,
+      "hostname" : "fa18-cs425-g06-05.cs.illinois.edu",
+      "logfile" : "machine5.i.log"
+    },
+    {
+      "id" : 6,
+      "hostname" : "fa18-cs425-g06-06.cs.illinois.edu",
+      "logfile" : "machine6.i.log"
+    },
+    {
+      "id" : 7,
+      "hostname" : "fa18-cs425-g06-07.cs.illinois.edu",
+      "logfile" : "machine7.i.log"
+    }
+  ]
+}
