@@ -57,7 +57,8 @@ func parseRequest(conn net.Conn) {
 		
 	//execute grep
 	output := executeGrep(reqArr[0], reqArr[2])
-
+	//fmt.Println("output:\n")
+	//fmt.Println(output)
 	//append vm name to each grep result
 	arr := strings.Split(string(output), "\n")
 	out := ""
@@ -72,9 +73,11 @@ func parseRequest(conn net.Conn) {
 		if i == len(arr) - 2 {
 			out = out + arr[i]
 		} else {
-			out = out + arr[i] 
+			out = out + arr[i] + "\n" 
 		}
 	}
+	out = out + "\n"
+	fmt.Println("out:\n")
 	fmt.Println(out)
 	
 	//send response
