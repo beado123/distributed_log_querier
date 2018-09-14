@@ -29,7 +29,8 @@ func printOutput(outs []byte) {
 
 func executeGrep(query string, vm string) []byte{
 
-	cmd := exec.Command("grep", "-nr", query, vm)
+	//cmd := exec.Command("grep", "-nr", query, vm)
+	cmd := exec.Command("grep", query, vm)
     printCommand(cmd)
     output, err := cmd.CombinedOutput()
 	//print error
