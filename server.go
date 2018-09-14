@@ -39,7 +39,8 @@ func executeGrep(query string, vm string) []byte{
 	return output
 }
 
-func parseRequest(conn net.Conn, vm string) {
+//format: query vm_name logfile_name
+func parseRequest(conn net.Conn) {
 
 	//create a buffer to hold transferred data
 	buf := make([]byte, 1024)
@@ -54,7 +55,7 @@ func parseRequest(conn net.Conn, vm string) {
 	fmt.Println("received query:", reqArr[0])
 		
 	//execute grep
-	output := executeGrep(reqArr[0], vm)
+	output := executeGrep(reqArr[0], reqArr[2])
 
 	//append vm name to each grep result
 	arr := strings.Split(string(output), "\n")
@@ -86,14 +87,14 @@ func getIPAddrAndLogfile() (string, string){
 		arr[1] = arr[1][:len(arr[1]) - 1]
 	}
 	fmt.Println("ip address of current VM:" + arr[0])
-	fmt.Println(arr[1])
+	//fmt.Println(arr[1])
 	return arr[0],arr[1]
 }
 
 func main() {
 
 	//get ip address from servers list	
-	ip, vm := getIPAddrAndLogfile()
+	ip, _ := getIPAddrAndLogfile()
 	//listen for incoming connections
 	l, err := net.Listen("tcp", ip + ":3000")
 	printErr(err, "listening")
@@ -108,7 +109,7 @@ func main() {
 		fmt.Println("Accept:", conn.RemoteAddr().String())
 		printErr(err, "accepting")
 
-		go parseRequest(conn, vm)
+		go parseRequest(conn)
 	}
 }
 	
