@@ -60,11 +60,18 @@ func parseRequest(conn net.Conn) {
 	//append vm name to each grep result
 	arr := strings.Split(string(output), "\n")
 	out := ""
-	for i := 0; i<len(arr)-1; i++ {
+	/*for i := 0; i<len(arr)-1; i++ {
 		if i == len(arr) - 2 {
 			out = out + reqArr[1] + " " + "line " + arr[i]
 		} else {
 			out = out + reqArr[1] + " " + "line " + arr[i] + "\n"
+		}
+	}*/
+	for i := 0; i<len(arr)-1; i++ {
+		if i == len(arr) - 2 {
+			out = out + arr[i]
+		} else {
+			out = out + arr[i] + "\n"
 		}
 	}
 	fmt.Println(out)
