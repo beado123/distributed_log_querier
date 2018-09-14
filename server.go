@@ -72,7 +72,7 @@ func parseRequest(conn net.Conn) {
 		if i == len(arr) - 2 {
 			out = out + arr[i]
 		} else {
-			out = out + arr[i] + "\n"
+			out = out + arr[i] 
 		}
 	}
 	fmt.Println(out)
