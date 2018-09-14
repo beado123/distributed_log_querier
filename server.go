@@ -29,8 +29,7 @@ func printOutput(outs []byte) {
 
 func executeGrep(query string, vm string) []byte{
 
-	//cmd := exec.Command("grep", "-nr", query, vm)
-	cmd := exec.Command("grep", query, vm)
+	cmd := exec.Command("grep", "-nr", query, vm)
     printCommand(cmd)
     output, err := cmd.CombinedOutput()
 	//print error
@@ -57,28 +56,19 @@ func parseRequest(conn net.Conn) {
 		
 	//execute grep
 	output := executeGrep(reqArr[0], reqArr[2])
-	//fmt.Println("output:\n")
-	//fmt.Println(output)
+
 	//append vm name to each grep result
 	arr := strings.Split(string(output), "\n")
 	out := ""
-	/*for i := 0; i<len(arr)-1; i++ {
+	for i := 0; i<len(arr)-1; i++ {
 		if i == len(arr) - 2 {
 			out = out + reqArr[1] + " " + "line " + arr[i]
 		} else {
 			out = out + reqArr[1] + " " + "line " + arr[i] + "\n"
 		}
-	}*/
-	for i := 0; i<len(arr)-1; i++ {
-		if i == len(arr) - 2 {
-			out = out + arr[i]
-		} else {
-			out = out + arr[i] + "\n" 
-		}
 	}
+	//for the correctness of "wc -l " command
 	out = out + "\n"
-	fmt.Println("out:\n")
-	fmt.Println(out)
 	
 	//send response
 	conn.Write([]byte(out))
