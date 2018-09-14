@@ -76,11 +76,11 @@ func rareAll(machineNum string, fp *os.File) {
 //query: apple
 func somewhatFrequentOne(machineNum string, fp *os.File) {
 	if machineNum == "01" {
-		n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\nApple is essential.\nApple is not delicious.\n" + 						randomStr() + randomStr() + randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\nApple is essential.\nApple is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	} else {
-		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + 						randomStr() + randomStr() + randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	}
@@ -89,11 +89,11 @@ func somewhatFrequentOne(machineNum string, fp *os.File) {
 //query: apple
 func somewhatFrequentSome(machineNum string, fp *os.File) {
 	if (machineNum == "01" || machineNum == "02" || machineNum == "06") {
-		n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\nApple is essential.\nApple is not delicious.\n" + 						randomStr() + randomStr() + randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\nApple is essential.\nApple is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	} else {
-		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + 						randomStr() + randomStr() + randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	}
@@ -102,7 +102,7 @@ func somewhatFrequentSome(machineNum string, fp *os.File) {
 //query: apple
 func somewhatFrequentAll(machineNum string, fp *os.File) {
 
-	n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\nApple is essential.\nApple is not delicious.\n" + 						randomStr() + randomStr() + randomStr() + randomStr() ))
+	n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\nApple is essential.\nApple is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
 	check(err)
 	fmt.Printf("Wrote %d bytes\n", n)
 	
@@ -111,11 +111,11 @@ func somewhatFrequentAll(machineNum string, fp *os.File) {
 //query: apple
 func frequentOne(machineNum string, fp *os.File) {
 	if machineNum == "01" {
-		n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\nApple is apple.\nApple is not apple\n" + 									randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\nApple is apple.\nApple is not apple\n" + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	} else {
-		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + 						randomStr() + randomStr() + randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	}
@@ -124,11 +124,11 @@ func frequentOne(machineNum string, fp *os.File) {
 //query: apple
 func frequentSome(machineNum string, fp *os.File) {
 	if (machineNum == "01" || machineNum == "02" || machineNum == "06") {
-		n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\nApple is apple.\nApple is not apple\n" + 									randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\nApple is apple.\nApple is not apple\n" + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	} else {
-		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + 						randomStr() + randomStr() + randomStr() + randomStr() ))
+		n, err := fp.Write([]byte("This is an banana.\nToday is a sunny day.\nI love banana\nbanana is essential.\nbanana is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
 		check(err)
 		fmt.Printf("Wrote %d bytes\n", n)
 	}
@@ -137,15 +137,14 @@ func frequentSome(machineNum string, fp *os.File) {
 //query: apple
 func frequentAll(machineNum string, fp *os.File) {
 
-	n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\nApple is apple.\nApple is not apple\n" + 									randomStr() + randomStr() ))
+	n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\nApple is apple.\nApple is not apple\n" + randomStr() + randomStr() ))
 	check(err)
 	fmt.Printf("Wrote %d bytes\n", n)
 }
 	
 
 func main() {
-	//ret := randomWord()
-	//fmt.Println(ret)
+
 	ip, _ := getIPAddrAndLogfile()
 	fmt.Println("current ip address:", ip)
 	machineNum := ip[15:17]
