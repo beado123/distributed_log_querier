@@ -2,7 +2,7 @@ package main
 
 import "net"
 import "fmt"
-//import "bufio"
+import "bufio"
 import "os"
 import "io"
 import "encoding/json" 
@@ -22,7 +22,7 @@ func main(){
 	file_name := os.Args[3]
 
 	//parse json file get each server information
-	jsonFile, err := os.Open("test.json") 
+	jsonFile, err := os.Open("servers.json") 
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -43,9 +43,12 @@ func main(){
 	for i := 0; i < len(server_info.Servsers); i++ {
 		go func(Hostname string, Logfile string, grep_cmd string, port_num string, id string){
 			//connect to server
-			conn, _ := net.Dial("tcp", Hostname + ":" + port_num)
+			conn, err := net.Dial("tcp", Hostname + ":" + port_num)
+			if err != nil {
+				os.Exit(1)
+			}
 			//send to socket
-			name := "machine" + id + ".i.log"
+			name := "machine" + id
 			fmt.Fprintf(conn, grep_cmd + " " + name + " " + file_name)
 			//create log file
 			f, err := os.Create(Logfile)
@@ -80,7 +83,16 @@ func main(){
 		}(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num, server_info.Servsers[i].Id)		
 	}
 	wg.Wait()
-	//fmt.Println("done")
+	
+	//print total line number of each file
+	ret := 0
+	for i := 0; i < len(server_info.Servsers); i++ {
+		lc, _ := lineCount(server_info.Servsers[i].Logfile)
+		name := "machine" + server_info.Servsers[i].Id
+		fmt.Println(name, lc)
+                ret += lc
+	}
+	fmt.Println("total:", ret)
 }
 
 type Servsers struct {
@@ -92,3 +104,20 @@ type serverInfo struct {
 	Hostname   string `json:"hostname"`
 	Logfile   string `json:"logfile"`
 }
+
+func lineCount(filename string) (int, error) {
+    lc := 0
+    f, err := os.Open(filename)
+    if err != nil {
+        return 0, err
+    }
+    defer f.Close()
+    s := bufio.NewScanner(f)
+    for s.Scan() {
+        if len(s.Text()) > 0 {
+                lc++
+        }
+    }
+    return lc, s.Err()
+}
+
