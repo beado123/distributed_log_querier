@@ -14,20 +14,21 @@ func check(e error) {
 	}
 }
 
-func getIPAddrAndLogfile() (string, string){
+func getIPAddr() string{
 
 	data, err := ioutil.ReadFile("ip_address")
-	//info := string(data[:])
-	arr := strings.Split(string(data[:]), " ") 
 	if err != nil {
 		panic(err)
 	}
-	if strings.HasSuffix(arr[1], "\n") {
-		arr[1] = arr[1][:len(arr[1]) - 1]
+
+	ip := string(data[:len(data)])
+	
+	//remove \n from end of line
+	if strings.HasSuffix(ip, "\n") {
+		ip = ip[:(len(ip) - 1)]
 	}
-	//fmt.Println("ip address of current VM:" + arr[0])
-	//fmt.Println(arr[1])
-	return arr[0],arr[1]
+	fmt.Println("ip address of current VM:\n", ip)
+	return ip
 }
 
 //generates a random string of length 15
@@ -145,7 +146,7 @@ func frequentAll(machineNum string, fp *os.File) {
 
 func main() {
 
-	ip, _ := getIPAddrAndLogfile()
+	ip := getIPAddr()
 	fmt.Println("current ip address:", ip)
 	machineNum := ip[15:17]
 	fmt.Println("machine number:", machineNum)
