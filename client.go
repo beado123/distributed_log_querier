@@ -14,13 +14,13 @@ import "time"
 
 func main(){
 	//get grep command and port number from command-line arguments
-	if len(os.Args) < 4 {
+	if len(os.Args) < 3 {
 		fmt.Println("Please type in grep command and port number!")
 		return
 	}
 	grep_cmd := os.Args[1]
-	port_num := os.Args[2]
-	file_name := os.Args[3]
+	port_num := "3000"
+	file_name := os.Args[2]
 
 	//parse json file get each server information
 	jsonFile, err := os.Open("servers.json") 

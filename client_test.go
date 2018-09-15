@@ -20,7 +20,7 @@ func TestDifference(t *testing.T){
 	
 	for i := 0; i < len(queries); i++ {
 		start := time.Now()
-		exec.Command("./client", queries[i], "3000", filenames[i]).Run();
+		exec.Command("./client", queries[i], filenames[i]).Run();
 		ret := 0
 		for j := 0; j < 10; j++ {
 			filename := "machine" + numbers[j] + ".i.log"
@@ -57,7 +57,7 @@ func deleteFile(f string) {
         if _, err := os.Stat("./" + f); err == nil {
                 err := os.Remove("./" + f)
                 //check(err)
-                fmt.Println("Deleted " + f)
+                //fmt.Println("Deleted " + f)
 		_ = err
         }
 }
