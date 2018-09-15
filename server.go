@@ -18,52 +18,44 @@ func printErr(err error, s string) {
 }
 
 func printCommand(cmd *exec.Cmd) {
-  fmt.Printf("==> Executing: %s\n", strings.Join(cmd.Args, " "))
+    fmt.Printf("==> Executing: %s\n", strings.Join(cmd.Args, " "))
 }
 
 func printOutput(outs []byte) {
-  if len(outs) > 0 {
-    fmt.Printf("==> Output:\n%s\n", string(outs))
-  }
+    if len(outs) > 0 {
+      fmt.Printf("==> Output:\n%s\n", string(outs))
+    }
 }
 
 func executeGrep(query string, vm string) []byte{
 
 	cmd := exec.Command("grep", "-nr", "--text", query, vm)
    	printCommand(cmd)
-    	output, err := cmd.CombinedOutput()
+    output, err := cmd.CombinedOutput()
 
-	//print error
    	 if err != nil {
-		os.Stderr.WriteString(fmt.Sprintf("==> Error: %s\n", err.Error()))
-		fmt.Println("grep error:\n")
-		fmt.Println(err)
+		os.Stderr.WriteString(fmt.Sprintf("==> Grep Error: %s\n", err.Error()))
 	}
 	return output
 }
 
-//format: query vm_name logfile_name
+//commadn format: query vm_name logfile_name
 func parseRequest(conn net.Conn) {
 
-	//create a buffer to hold transferred data
+	//create a buffer to hold transferred data and read incoming data into buffer
 	buf := make([]byte, 1024)
-	//read incoming data into buffer
 	reqLen, err := conn.Read(buf)
 	printErr(err, "reading")
-	fmt.Println("reqLen:",reqLen)
 
-	//put request command into array
+	//convert request command into array
 	reqArr := strings.Split(string(buf[:reqLen]), " ")
-	
-	fmt.Println("received query:", reqArr[0])
 		
 	//execute grep
 	output := executeGrep(reqArr[0], reqArr[2])
 	
-	out := ""
 	//append vm name to each grep result
-	arr := strings.Split(string(output), "\n")
-	
+	out := ""
+	arr := strings.Split(string(output), "\n")	
 	for i := 0; i<len(arr)-1; i++ {
 		if i == len(arr) - 2 {
 			out = out + reqArr[1] + " " + "line " + arr[i]
@@ -80,26 +72,27 @@ func parseRequest(conn net.Conn) {
 	conn.Close()
 }
 
-func getIPAddrAndLogfile() (string, string){
+func getIPAddrAndLogfile() string{
 
 	data, err := ioutil.ReadFile("ip_address")
-	//info := string(data[:])
-	arr := strings.Split(string(data[:]), " ") 
 	if err != nil {
 		panic(err)
 	}
-	if strings.HasSuffix(arr[1], "\n") {
-		arr[1] = arr[1][:len(arr[1]) - 1]
+
+	ip := string(data[:len(data)])
+	
+	//remove \n from end of line
+	if strings.HasSuffix(ip, "\n") {
+		ip = ip[:(len(ip) - 1)]
 	}
-	fmt.Println("ip address of current VM:" + arr[0])
-	//fmt.Println(arr[1])
-	return arr[0],arr[1]
+	fmt.Println("ip address of current VM:\n", ip)
+	return ip
 }
 
 func main() {
 
 	//get ip address from servers list	
-	ip, _ := getIPAddrAndLogfile()
+	ip := getIPAddrAndLogfile()
 	//listen for incoming connections
 	l, err := net.Listen("tcp", ip + ":3000")
 	printErr(err, "listening")
