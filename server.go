@@ -29,12 +29,15 @@ func printOutput(outs []byte) {
 
 func executeGrep(query string, vm string) []byte{
 
-	cmd := exec.Command("grep", "-nr", query, vm)
-    printCommand(cmd)
-    output, err := cmd.CombinedOutput()
+	cmd := exec.Command("grep", "-nr", "--text", query, vm)
+   	printCommand(cmd)
+    	output, err := cmd.CombinedOutput()
+
 	//print error
-    if err != nil {
+   	 if err != nil {
 		os.Stderr.WriteString(fmt.Sprintf("==> Error: %s\n", err.Error()))
+		fmt.Println("grep error:\n")
+		fmt.Println(err)
 	}
 	return output
 }
@@ -56,10 +59,11 @@ func parseRequest(conn net.Conn) {
 		
 	//execute grep
 	output := executeGrep(reqArr[0], reqArr[2])
-
+	
+	out := ""
 	//append vm name to each grep result
 	arr := strings.Split(string(output), "\n")
-	out := ""
+	
 	for i := 0; i<len(arr)-1; i++ {
 		if i == len(arr) - 2 {
 			out = out + reqArr[1] + " " + "line " + arr[i]
