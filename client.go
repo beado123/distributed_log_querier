@@ -9,6 +9,7 @@ import "encoding/json"
 import "io/ioutil"
 //import "strconv"
 import "sync"
+import "time"
 
 
 func main(){
@@ -40,12 +41,15 @@ func main(){
 	//build a connect with each server
 	var wg sync.WaitGroup
 	wg.Add(len(server_info.Servsers))
+	start := time.Now()
 	for i := 0; i < len(server_info.Servsers); i++ {
 		go func(Hostname string, Logfile string, grep_cmd string, port_num string, id string){
 			//connect to server
 			conn, err := net.Dial("tcp", Hostname + ":" + port_num)
 			if err != nil {
-				os.Exit(1)
+				fmt.Println(err)
+				wg.Done()
+				return;
 			}
 			//send to socket
 			name := "machine" + id
@@ -54,7 +58,8 @@ func main(){
 			f, err := os.Create(Logfile)
 			if err != nil {
 				fmt.Println(err)
-				os.Exit(1)
+				wg.Done()
+                                return;
 			}
 			defer f.Close()
 	
@@ -67,14 +72,16 @@ func main(){
 						break	
 					}
 					fmt.Println(err)
-					os.Exit(1)	
+					wg.Done()
+                                	return;
 				}
 				text := string(message[:n1])
 				fmt.Println(text)
 				n2, err := f.WriteString(text)
 				if err != nil {
 					fmt.Println(err)
-					os.Exit(1)
+					wg.Done()
+                                	return;
 				}
 				_ = n1
 				_ = n2
@@ -83,7 +90,8 @@ func main(){
 		}(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num, server_info.Servsers[i].Id)		
 	}
 	wg.Wait()
-	
+	end := time.Now()	
+	elipsed := end.Sub(start)
 	//print total line number of each file
 	ret := 0
 	for i := 0; i < len(server_info.Servsers); i++ {
@@ -93,6 +101,7 @@ func main(){
                 ret += lc
 	}
 	fmt.Println("total:", ret)
+	fmt.Println("latency: ", elipsed)
 }
 
 type Servsers struct {

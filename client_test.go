@@ -15,8 +15,8 @@ func TestDifference(t *testing.T){
 	outputs := [9]int{1, 3, 10, 4, 12, 40, 5, 15, 50}
 	numbers := [10]string{"01", "02", "03", "04", "05", "06", "07", "08", "09", "10"}
 	//queries := [1]string{"apple"}
-	//filenames := [1]string{"somewhatFrequentAll.log"}
-	//outputs := [1]int{40}
+	//filenames := [1]string{"rareOne.log"}
+	//outputs := [1]int{1}
 	
 	for i := 0; i < len(queries); i++ {
 		start := time.Now()
