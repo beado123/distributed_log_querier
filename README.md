@@ -11,7 +11,7 @@ go run server.go
 On any one of the machine, start the client to query log files:
 ```
 go build client.go
-./client.go [query] 3000 [log file name]
+./client.go [query] [log file name]
 ```
 If running for demo purpose, [log_file_name] should be vm.log
 ### To Run Unit Test:
