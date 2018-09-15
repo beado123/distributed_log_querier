@@ -13,12 +13,13 @@ import "sync"
 
 func main(){
 	//get grep command and port number from command-line arguments
-	if len(os.Args) < 3 {
+	if len(os.Args) < 4 {
 		fmt.Println("Please type in grep command and port number!")
 		return
 	}
 	grep_cmd := os.Args[1]
 	port_num := os.Args[2]
+	file_name := os.Args[3]
 
 	//parse json file get each server information
 	jsonFile, err := os.Open("test.json") 
@@ -30,23 +31,22 @@ func main(){
 	byteValue, _ := ioutil.ReadAll(jsonFile) 
 	var server_info Servsers
 	json.Unmarshal(byteValue, &server_info)
-	for i := 0; i < len(server_info.Servsers); i++ {
+	/*for i := 0; i < len(server_info.Servsers); i++ {
 		fmt.Println("Server Id: " + server_info.Servsers[i].Id)
 		fmt.Println("Server Hostname: " + server_info.Servsers[i].Hostname)
 		fmt.Println("Server Logfile: " + server_info.Servsers[i].Logfile)
-	}
+	}*/
 	
 	//build a connect with each server
 	var wg sync.WaitGroup
 	wg.Add(len(server_info.Servsers))
 	for i := 0; i < len(server_info.Servsers); i++ {
-		//go work(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num)
 		go func(Hostname string, Logfile string, grep_cmd string, port_num string, id string){
 			//connect to server
 			conn, _ := net.Dial("tcp", Hostname + ":" + port_num)
 			//send to socket
 			name := "machine" + id + ".i.log"
-			fmt.Fprintf(conn, grep_cmd + " " + name)
+			fmt.Fprintf(conn, grep_cmd + " " + name + " " + file_name)
 			//create log file
 			f, err := os.Create(Logfile)
 			if err != nil {
@@ -80,7 +80,7 @@ func main(){
 		}(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num, server_info.Servsers[i].Id)		
 	}
 	wg.Wait()
-	fmt.Println("done")
+	//fmt.Println("done")
 }
 
 type Servsers struct {
