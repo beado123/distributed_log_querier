@@ -9,17 +9,18 @@ import "encoding/json"
 import "io/ioutil"
 //import "strconv"
 import "sync"
+import "time"
 
 
 func main(){
 	//get grep command and port number from command-line arguments
-	if len(os.Args) < 4 {
+	if len(os.Args) < 3 {
 		fmt.Println("Please type in grep command and port number!")
 		return
 	}
 	grep_cmd := os.Args[1]
-	port_num := os.Args[2]
-	file_name := os.Args[3]
+	port_num := "3000"
+	file_name := os.Args[2]
 
 	//parse json file get each server information
 	jsonFile, err := os.Open("servers.json") 
@@ -40,12 +41,15 @@ func main(){
 	//build a connect with each server
 	var wg sync.WaitGroup
 	wg.Add(len(server_info.Servsers))
+	start := time.Now()
 	for i := 0; i < len(server_info.Servsers); i++ {
 		go func(Hostname string, Logfile string, grep_cmd string, port_num string, id string){
 			//connect to server
 			conn, err := net.Dial("tcp", Hostname + ":" + port_num)
 			if err != nil {
-				os.Exit(1)
+				fmt.Println(err)
+				wg.Done()
+				return;
 			}
 			//send to socket
 			name := "machine" + id
@@ -54,7 +58,8 @@ func main(){
 			f, err := os.Create(Logfile)
 			if err != nil {
 				fmt.Println(err)
-				os.Exit(1)
+				wg.Done()
+                                return;
 			}
 			defer f.Close()
 	
@@ -67,14 +72,16 @@ func main(){
 						break	
 					}
 					fmt.Println(err)
-					os.Exit(1)	
+					wg.Done()
+                                	return;
 				}
 				text := string(message[:n1])
 				fmt.Println(text)
 				n2, err := f.WriteString(text)
 				if err != nil {
 					fmt.Println(err)
-					os.Exit(1)
+					wg.Done()
+                                	return;
 				}
 				_ = n1
 				_ = n2
@@ -83,7 +90,8 @@ func main(){
 		}(server_info.Servsers[i].Hostname, server_info.Servsers[i].Logfile, grep_cmd, port_num, server_info.Servsers[i].Id)		
 	}
 	wg.Wait()
-	
+	end := time.Now()	
+	elipsed := end.Sub(start)
 	//print total line number of each file
 	ret := 0
 	for i := 0; i < len(server_info.Servsers); i++ {
@@ -93,6 +101,7 @@ func main(){
                 ret += lc
 	}
 	fmt.Println("total:", ret)
+	fmt.Println("latency: ", elipsed)
 }
 
 type Servsers struct {
@@ -105,8 +114,9 @@ type serverInfo struct {
 	Logfile   string `json:"logfile"`
 }
 
+//This function calculates line number of a file
 func lineCount(filename string) (int, error) {
-    lc := 0
+    count := 0
     f, err := os.Open(filename)
     if err != nil {
         return 0, err
@@ -115,9 +125,9 @@ func lineCount(filename string) (int, error) {
     s := bufio.NewScanner(f)
     for s.Scan() {
         if len(s.Text()) > 0 {
-                lc++
+                count++
         }
     }
-    return lc, s.Err()
+    return count, s.Err()
 }
 
