@@ -114,6 +114,7 @@ type serverInfo struct {
 	Logfile   string `json:"logfile"`
 }
 
+//This function calculates line number of a file
 func lineCount(filename string) (int, error) {
     count := 0
     f, err := os.Open(filename)
