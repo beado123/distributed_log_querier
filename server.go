@@ -60,8 +60,6 @@ func parseRequest(conn net.Conn) {
 			out = out + reqArr[1] + " " + "line " + arr[i] + "\n"
 		}
 	}
-	//for the correctness of "wc -l " command
-	//out = out + "\n"
 	
 	//send response
 	conn.Write([]byte(out))
