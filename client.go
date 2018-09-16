@@ -115,7 +115,7 @@ type serverInfo struct {
 }
 
 func lineCount(filename string) (int, error) {
-    lc := 0
+    count := 0
     f, err := os.Open(filename)
     if err != nil {
         return 0, err
@@ -124,9 +124,9 @@ func lineCount(filename string) (int, error) {
     s := bufio.NewScanner(f)
     for s.Scan() {
         if len(s.Text()) > 0 {
-                lc++
+                count++
         }
     }
-    return lc, s.Err()
+    return count, s.Err()
 }
 
