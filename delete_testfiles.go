@@ -5,12 +5,14 @@ import (
 	"fmt"
 )
 
+//This function checks for errors and prints them
 func check(e error) {
 	if e != nil {
 		fmt.Println(e)
 	}
 }
 
+//This function first checks whether file exists and if yes, then delete it
 func deleteFile(f string) {
 	if _, err := os.Stat("./" + f); err == nil {
 		err := os.Remove("./" + f)
@@ -19,6 +21,7 @@ func deleteFile(f string) {
 	}
 }
 
+//Main function that deletes a set of log files
 func main() {
 
 	deleteFile("rareOne.log")

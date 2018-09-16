@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 )
 
-
+//This function helps printing out errors
 func printErr(err error, s string) {
 	if err != nil {
 		fmt.Println("Error occurs on ", s , "\n" , err.Error())
@@ -17,16 +17,12 @@ func printErr(err error, s string) {
 	}
 }
 
+//This function helps printing out commads that are executing
 func printCommand(cmd *exec.Cmd) {
     fmt.Printf("==> Executing: %s\n", strings.Join(cmd.Args, " "))
 }
 
-func printOutput(outs []byte) {
-    if len(outs) > 0 {
-      fmt.Printf("==> Output:\n%s\n", string(outs))
-    }
-}
-
+//This function executes grep command
 func executeGrep(query string, vm string) []byte{
 
 	cmd := exec.Command("grep", "-nr", "--text", query, vm)
@@ -39,7 +35,8 @@ func executeGrep(query string, vm string) []byte{
 	return output
 }
 
-//commadn format: query vm_name logfile_name
+//This function parses request sent from client and sends the result back to client
+//commadn format: query logfile_name
 func parseRequest(conn net.Conn) {
 
 	//create a buffer to hold transferred data and read incoming data into buffer
@@ -64,7 +61,7 @@ func parseRequest(conn net.Conn) {
 		}
 	}
 	//for the correctness of "wc -l " command
-	out = out + "\n"
+	//out = out + "\n"
 	
 	//send response
 	conn.Write([]byte(out))
@@ -72,6 +69,7 @@ func parseRequest(conn net.Conn) {
 	conn.Close()
 }
 
+//This function extracts ip address of current VM from file "ip_address" in current directory
 func getIPAddrAndLogfile() string{
 
 	data, err := ioutil.ReadFile("ip_address")
@@ -89,6 +87,7 @@ func getIPAddrAndLogfile() string{
 	return ip
 }
 
+//Main function that starts the server and listens for incoming connections
 func main() {
 
 	//get ip address from servers list	

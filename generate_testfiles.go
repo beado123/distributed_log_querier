@@ -8,12 +8,14 @@ import (
 	"crypto/rand"
 )
 
+//This function helps check for errors
 func check(e error) {
 	if e != nil {
 		panic(e)
 	}
 }
 
+//This function extracts ip address of current VM from file "ip_address" in current directory
 func getIPAddr() string{
 
 	data, err := ioutil.ReadFile("ip_address")
@@ -31,7 +33,7 @@ func getIPAddr() string{
 	return ip
 }
 
-//generates a random string of length 15
+//This function generates a random string of length 15
 func randomStr() string{
 	b := make([]byte, 15)
 	_, err := rand.Read(b)
@@ -39,7 +41,7 @@ func randomStr() string{
 	return string(b[:15]) + "\n"
 }
 
-//query: apple
+//This function writes lines to file for test case rare(frequency) and one(occurs in one log file)
 func rareOne(machineNum string, fp *os.File) {
 	if machineNum == "01" {
 		n, err := fp.Write( []byte("This is an apple.\nToday is a sunny day.\nI love pizza.\n" + randomStr()+ randomStr() + randomStr()))
@@ -52,7 +54,7 @@ func rareOne(machineNum string, fp *os.File) {
 	}
 }
 
-//query: apple
+//This function writes lines to file for test case rare(frequency) and Some(occurs in some log files)
 func rareSome(machineNum string, fp *os.File) {
 	if (machineNum == "01" || machineNum == "02" || machineNum == "06") {
 		n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love pizza.\n" + randomStr() + randomStr() + randomStr()))
@@ -65,7 +67,7 @@ func rareSome(machineNum string, fp *os.File) {
 	}
 }
 
-//query: apple
+//This function writes lines to file for test case rare(frequency) and All(occurs in all log files)
 func rareAll(machineNum string, fp *os.File) {
 
 	n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love pizza\n" + randomStr() + randomStr() + randomStr()))
@@ -74,7 +76,7 @@ func rareAll(machineNum string, fp *os.File) {
 	
 }
 
-//query: apple
+//This function writes lines to file for test case somewhatFrequent(frequency) and one(occurs in one log file)
 func somewhatFrequentOne(machineNum string, fp *os.File) {
 	if machineNum == "01" {
 		n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\napple is essential.\napple is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
@@ -87,7 +89,7 @@ func somewhatFrequentOne(machineNum string, fp *os.File) {
 	}
 }
 
-//query: apple
+//This function writes lines to file for test case somewhatFrequent(frequency) and some(occurs in some log files)
 func somewhatFrequentSome(machineNum string, fp *os.File) {
 	if (machineNum == "01" || machineNum == "02" || machineNum == "06") {
 		n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\napple is essential.\napple is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
@@ -100,7 +102,7 @@ func somewhatFrequentSome(machineNum string, fp *os.File) {
 	}
 }
 
-//query: apple
+//This function writes lines to file for test case somewhatFrequent(frequency) and all(occurs in all log files)
 func somewhatFrequentAll(machineNum string, fp *os.File) {
 
 	n, err := fp.Write([]byte("This is an apple.\nToday is a sunny day.\nI love apple\napple is essential.\napple is not delicious.\n" + randomStr() + randomStr() + randomStr() + randomStr() ))
@@ -109,7 +111,7 @@ func somewhatFrequentAll(machineNum string, fp *os.File) {
 	
 }
 
-//query: apple
+//This function writes lines to file for test case frequent(frequency) and one(occurs in one log file)
 func frequentOne(machineNum string, fp *os.File) {
 	if machineNum == "01" {
 		n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\napple is apple.\napple is not apple\n" + randomStr() + randomStr() ))
@@ -122,7 +124,7 @@ func frequentOne(machineNum string, fp *os.File) {
 	}
 }
 
-//query: apple
+//This function writes lines to file for test case frequent(frequency) and some(occurs in some log files)
 func frequentSome(machineNum string, fp *os.File) {
 	if (machineNum == "01" || machineNum == "02" || machineNum == "06") {
 		n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\napple is apple.\napple is not apple\n" + randomStr() + randomStr() ))
@@ -135,7 +137,7 @@ func frequentSome(machineNum string, fp *os.File) {
 	}
 }
 
-//query: apple
+//This function writes lines to file for test case frequent(frequency) and all(occurs in all log files)
 func frequentAll(machineNum string, fp *os.File) {
 
 	n, err := fp.Write([]byte("apple is apple an apple.\napple is an apple apple.\nI love apple apple\napple is apple.\napple is not apple\n" + randomStr() + randomStr() ))
@@ -143,7 +145,7 @@ func frequentAll(machineNum string, fp *os.File) {
 	fmt.Printf("Wrote %d bytes\n", n)
 }
 	
-
+//Main function that creates 9 testing log files
 func main() {
 
 	ip := getIPAddr()
